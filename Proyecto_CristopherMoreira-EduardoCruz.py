@@ -25,6 +25,7 @@ fuenteletra = pygame.font.match_font("Arial", 15)
 puntuacion = 0
 segundo = 0
 cronometro=0
+nivel =1
 facil=True
 normal=False
 dificil=False
@@ -104,6 +105,15 @@ class GameState():
     def __init__(self):
         super().__init__()
         self.state= 'nameScreen'
+
+    # Set screen manager (Changes betweeen screens)
+    def StateManager(self):
+        if self.state == 'intro':
+            self.intro()
+        if self.state == 'nameScreen':
+            self.nameScreen()
+        if self.state == 'main_game':
+            self.main_game()
 
     def main_game(self):
         global cronometro, segundo, facil, normal, dificil, puntuacion
@@ -283,13 +293,6 @@ class GameState():
                 pygame.quit()
                 sys.exit()
         pygame.display.flip()
-
-    #Set screen manager (Changes betweeen screens)
-    def StateManager(self):
-        if self.state == 'intro':
-            self.intro()
-        if self.state == 'nameScreen':
-            self.nameScreen()
 
 #Set class for TextBox (Write your name menu)
 class TextBox(pygame.sprite.Sprite):
