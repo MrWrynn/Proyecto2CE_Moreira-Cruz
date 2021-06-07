@@ -24,6 +24,8 @@ fondojuego = pygame.image.load("assets/spacebg3.png")
 fuenteletra = pygame.font.match_font("Arial", 15)
 puntuacion = 0
 segundo = 0
+segundo_1 = 60
+segundo_2 = 120
 cronometro=0
 nivel =1
 facil=True
@@ -34,7 +36,7 @@ dificil=False
 #Draw text on the screen
 def draw_text(surface, text, size, x, y):
     font= pygame.font.SysFont("serif", size)
-    text_surface = font.render(text, True, WHITE)
+    text_surface = font.render(text, True, BLACK)
     text_rect =  text_surface.get_rect()
     text_rect.midtop = (x, y)
     surface.blit(text_surface, text_rect)
@@ -110,10 +112,28 @@ class GameState():
     def StateManager(self):
         if self.state == 'intro':
             self.intro()
-        if self.state == 'nameScreen':
+        elif self.state == 'nameScreen':
             self.nameScreen()
-        if self.state == 'main_game':
+        elif self.state == 'main_game':
             self.main_game()
+        elif self.state == 'about':
+            self.about()
+        elif self.state == 'scores':
+            self.scores()
+        elif self.state == 'rules':
+            self.rules()
+        elif self.state == 'levels':
+            self.levels()
+        elif self.state == 'level1':
+            self.level1()
+        elif self.state == 'level2':
+            self.level2()
+        elif self.state == 'level3':
+            self.level3()
+        elif self.state == 'go_screen':
+            self.go_screen()
+        elif self.state == 'win_screen':
+            self.win_screen()
 
     def main_game(self):
         global cronometro, segundo, facil, normal, dificil, puntuacion
@@ -126,13 +146,16 @@ class GameState():
         enemigo.update()
         sprites.draw(screen)
         enemigo.draw(screen)
+        draw_text(screen, "Puntos : " + str(puntuacion), 25, WIDTH - 100, 10)
+        draw_text(screen, "Vida : " + str(jugador.vidas), 25, WIDTH - 400, 10)
+        draw_text(screen, "Tiempo : " + str(segundo), 25, WIDTH - 550, 10)
         tiempoactual = pygame.time.get_ticks()
         impactos = pygame.sprite.spritecollide(jugador, enemigo, False)
         if impactos and (tiempoactual - jugador.ultimogolpe) > jugador.invencible:
             jugador.vidas -= 1
             jugador.ultimogolpe = tiempoactual
         if tiempoactual - cronometro > 1000:
-            segundo += 1
+            segundo += 20
             if facil:
                 puntuacion += 1
             if normal:
@@ -163,6 +186,7 @@ class GameState():
             asteroide4.kill()
             asteroide5.kill()
             asteroide6.kill()
+            dificil= False
         if jugador.vidas == 0:
             asteroide1.kill()
             asteroide2.kill()
@@ -173,6 +197,10 @@ class GameState():
             facil = False
             normal = False
             dificil = False
+        if jugador.vidas <= 0:
+            self.state = 'go_screen'
+        elif segundo >= 180:
+            self.state = 'win_screen'
         pygame.display.flip()
 
     #Set name screen
@@ -231,10 +259,21 @@ class GameState():
     #Set about screen
     def about(self):
         screen.blit(background, [0, 0])
+        draw_text(screen, "OPERATION MOON LIGHT", 65, WIDTH // 2, HEIGHT // 4)
+        draw_text(screen, "País: Costa Rica", 27, WIDTH // 2, HEIGHT // 2)
+        draw_text(screen, "Tecnologico de Costa Rica | Ingenieria en computadores", 27, WIDTH // 2, HEIGHT // 2 + 27)
+        draw_text(screen, "Taller de programación | Primer añor | Grupo", 27, WIDTH // 2, HEIGHT // 2 + 27 * 2)
+        draw_text(screen, "Leonardo Araya Martinez", 27, WIDTH // 2, HEIGHT // 2 + 27 * 3)
+        draw_text(screen, "Versión 1.0", 27, WIDTH // 2, HEIGHT // 2 + 27 * 4)
+        draw_text(screen, "Cristopher Moreira Quirós", 27, WIDTH // 2, HEIGHT // 2 + 27 * 5)
+        draw_text(screen, "*", 27, WIDTH // 2, HEIGHT // 2 + 27 * 6)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.state = 'intro'
         pygame.display.flip()
 
     #Set scores screen
@@ -244,6 +283,9 @@ class GameState():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.state = 'intro'
         pygame.display.flip()
 
     #Set intructions screen
@@ -266,32 +308,262 @@ class GameState():
     # Set intructions screen
     def levels(self):
         screen.blit(background, [0, 0])
+        draw_text(screen, "Seleccione un nivel", 65, WIDTH // 2, HEIGHT // 4)
+        draw_text(screen, "(1) Nivel 1", 27, WIDTH // 2, HEIGHT // 2)
+        draw_text(screen, "(2) Nivel 2", 27, WIDTH // 2, HEIGHT // 2 + 32)
+        draw_text(screen, "(3) Nivel 3", 27, WIDTH // 2, HEIGHT // 2 + 32 * 2)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.state = 'intro'
+                if event.key == pygame.K_1:
+                    self.state = 'level1'
+                if event.key == pygame.K_2:
+                    self.state = 'level2'
+                if event.key == pygame.K_3:
+                    self.state = 'level3'
         pygame.display.flip()
 
     def level1(self):
+        global segundo, puntuacion, facil, normal, dificil, cronometro
         screen.blit(background,[0 , 0])
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        sprites.update()
+        enemigo.update()
+        sprites.draw(screen)
+        enemigo.draw(screen)
+        draw_text(screen, "Puntos : " + str(puntuacion), 25, WIDTH - 100, 10)
+        draw_text(screen, "Vida : " + str(jugador.vidas), 25, WIDTH - 400, 10)
+        draw_text(screen, "Tiempo : " + str(segundo), 25, WIDTH - 550, 10)
+        tiempoactual = pygame.time.get_ticks()
+        impactos = pygame.sprite.spritecollide(jugador, enemigo, False)
+        if impactos and (tiempoactual - jugador.ultimogolpe) > jugador.invencible:
+            jugador.vidas -= 1
+            jugador.ultimogolpe = tiempoactual
+        if tiempoactual - cronometro > 1000:
+            segundo += 1
+            if facil:
+                puntuacion += 1
+            if normal:
+                puntuacion += 3
+            if dificil:
+                puntuacion += 5
+            cronometro = tiempoactual
+        if segundo > 5:
+            enemigo.add(asteroide2)
+        if segundo == 60:
+            enemigo.add(asteroide3)
+            facil = False
+            normal = True
+            jugador.vidas = 3
+        if segundo > 65:
+            enemigo.add(asteroide4)
+        if segundo == 120:
+            enemigo.add(asteroide5)
+            normal = False
+            dificil = True
+            jugador.vidas = 3
+        if segundo > 125:
+            enemigo.add(asteroide6)
+        if segundo > 180:
+            asteroide1.kill()
+            asteroide2.kill()
+            asteroide3.kill()
+            asteroide4.kill()
+            asteroide5.kill()
+            asteroide6.kill()
+        if jugador.vidas == 0:
+            asteroide1.kill()
+            asteroide2.kill()
+            asteroide3.kill()
+            asteroide4.kill()
+            asteroide5.kill()
+            asteroide6.kill()
+            facil = False
+            normal = False
+            dificil = False
+        if jugador.vidas <= 0:
+            self.state = 'go_screen'
+        elif segundo >= 180:
+            self.state = 'win_screen'
         pygame.display.flip()
 
     def level2(self):
         screen.blit(background,[0 , 0])
-        pygame.display.flip()
-
-    def level3(self):
-        screen.blit(background, [0, 0])
-        hola=0
-        pygame.display.flip()
-
-    #Set game over screen
-    def go_screen(self):
-        screen.blit(background, [0, 0])
+        global segundo, segundo_1, puntuacion, facil, normal, dificil, cronometro
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+        sprites.update()
+        enemigo.update()
+        sprites.draw(screen)
+        enemigo.draw(screen)
+        draw_text(screen, "Puntos : " + str(puntuacion), 25, WIDTH - 100, 10)
+        draw_text(screen, "Vida : " + str(jugador.vidas), 25, WIDTH - 400, 10)
+        draw_text(screen, "Tiempo : " + str(segundo), 25, WIDTH - 550, 10)
+        tiempoactual = pygame.time.get_ticks()
+        impactos = pygame.sprite.spritecollide(jugador, enemigo, False)
+        if impactos and (tiempoactual - jugador.ultimogolpe) > jugador.invencible:
+            print("Hola")
+            jugador.vidas -= 1
+            jugador.ultimogolpe = tiempoactual
+        if tiempoactual - cronometro > 1000:
+            segundo_1 += 1
+            segundo += 1
+            if normal:
+                puntuacion += 3
+            if dificil:
+                puntuacion += 5
+            cronometro = tiempoactual
+        if segundo_1 > 5:
+            enemigo.add(asteroide2)
+        if segundo_1 >= 60:
+            enemigo.add(asteroide3)
+            normal = True
+        if segundo_1 > 65:
+            enemigo.add(asteroide4)
+        if segundo_1 == 120:
+            enemigo.add(asteroide5)
+            normal = False
+            dificil = True
+            jugador.vidas = 3
+        if segundo_1 > 125:
+            enemigo.add(asteroide6)
+        if segundo_1 > 180:
+            asteroide1.kill()
+            asteroide2.kill()
+            asteroide3.kill()
+            asteroide4.kill()
+            asteroide5.kill()
+            asteroide6.kill()
+        if jugador.vidas == 0:
+            asteroide1.kill()
+            asteroide2.kill()
+            asteroide3.kill()
+            asteroide4.kill()
+            asteroide5.kill()
+            asteroide6.kill()
+            facil = False
+            normal = False
+            dificil = False
+        if jugador.vidas <= 0:
+            self.state = 'go_screen'
+        elif segundo >= 180:
+            self.state = 'win_screen'
+        pygame.display.flip()
+
+    def level3(self):
+        screen.blit(background, [0, 0])
+        global segundo, segundo_2, puntuacion, facil, normal, dificil, cronometro
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+        sprites.update()
+        enemigo.update()
+        sprites.draw(screen)
+        enemigo.draw(screen)
+        draw_text(screen, "Puntos : " + str(puntuacion), 25, WIDTH - 100, 10)
+        draw_text(screen, "Vida : " + str(jugador.vidas), 25, WIDTH - 400, 10)
+        draw_text(screen, "Tiempo : " + str(segundo), 25, WIDTH - 550, 10)
+        tiempoactual = pygame.time.get_ticks()
+        impactos = pygame.sprite.spritecollide(jugador, enemigo, False)
+        if impactos and (tiempoactual - jugador.ultimogolpe) > jugador.invencible:
+            jugador.vidas -= 1
+            jugador.ultimogolpe = tiempoactual
+        if tiempoactual - cronometro > 1000:
+            segundo_2 += 1
+            segundo += 1
+            if dificil:
+                puntuacion += 5
+            cronometro = tiempoactual
+        if segundo_2 > 5:
+            enemigo.add(asteroide2)
+        if segundo_2 >= 60:
+            enemigo.add(asteroide3)
+        if segundo_2 > 65:
+            enemigo.add(asteroide4)
+        if segundo_2 >= 120:
+            enemigo.add(asteroide5)
+            normal = False
+            dificil = True
+        if segundo_2 > 125:
+            enemigo.add(asteroide6)
+        if segundo_2 > 180:
+            asteroide1.kill()
+            asteroide2.kill()
+            asteroide3.kill()
+            asteroide4.kill()
+            asteroide5.kill()
+            asteroide6.kill()
+        if jugador.vidas == 0:
+            asteroide1.kill()
+            asteroide2.kill()
+            asteroide3.kill()
+            asteroide4.kill()
+            asteroide5.kill()
+            asteroide6.kill()
+            facil = False
+            normal = False
+            dificil = False
+        if jugador.vidas <= 0:
+            self.state = 'go_screen'
+        elif segundo >=180:
+            self.state = 'win_screen'
+        pygame.display.flip()
+
+    #Set game over screen
+    def go_screen(self):
+        global puntuacion, segundo, segundo_1, segundo_2, facil, normal, dificil
+        screen.blit(background, [0, 0])
+        draw_text(screen, "Has sido derrotado", 25, WIDTH - 300, 10)
+        draw_text(screen, "Su puntuación fue de : " + str(puntuacion), 25, WIDTH - 300, 40)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.key == pygame.K_ESCAPE:
+                self.state = 'intro'
+                segundo =0
+                segundo_1=60
+                segundo_2=120
+                jugador.vidas=3
+                puntuacion=0
+                sprites.add(jugador)
+                enemigo.add(asteroide1)
+                facil = True
+                normal = False
+                dificil = False
+        pygame.display.flip()
+
+    def win_screen(self):
+        global puntuacion, segundo, segundo_1, segundo_2, facil, normal, dificil
+        screen.blit(background, [0, 0])
+        draw_text(screen, "Has ganado", 25, WIDTH - 300, 10)
+        draw_text(screen, "Su puntuación fue de : " + str(puntuacion), 25, WIDTH - 300, 40)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.key == pygame.K_ESCAPE:
+                self.state = 'intro'
+                segundo = 0
+                segundo_1 = 60
+                segundo_2 = 120
+                jugador.vidas = 3
+                puntuacion = 0
+                sprites.add(jugador)
+                enemigo.add(asteroide1)
+                facil = True
+                normal = False
+                dificil = False
         pygame.display.flip()
 
 #Set class for TextBox (Write your name menu)
