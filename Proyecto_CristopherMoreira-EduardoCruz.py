@@ -10,6 +10,14 @@ WHITE=(255,255,255) #White color
 GREEN=(0,255,0) #Green color
 RED=(255,0,0) #Red color
 shiftDown = False
+music_menu=vlc.MediaPlayer("menu_chill.wav")
+music_level1=vlc.MediaPlayer("Vulnerability - Final No Echo.wav")
+music_level2=vlc.MediaPlayer("Final Boss Battle 6 V1.wav")
+music_level3=vlc.MediaPlayer("Wazeel's Neofortress.it")
+pygame.mixer.init()
+impact_sound=pygame.mixer.Sound("thud3.wav")
+ship_impact=pygame.mixer.Sound("clink3.wav")
+
 
 pygame.init() #Initialize pygame
 pygame.font.init() #Initialize font
@@ -90,17 +98,22 @@ class Asteroide(pygame.sprite.Sprite):
         if self.abajo:
             self.rect.y += self.velocidady
         else: self.rect.y -= self.velocidady
-        if self.rect.right >650:
+         if self.rect.right >650:
+            impact_sound.play()
             self.velocidad=random.randrange(2, 8)
             self.derecha=False
         if self.rect.left < 0:
+            impact_sound.play()
             self.velocidad = random.randrange(2, 8)
             self.derecha=True
         if self.rect.bottom > 650:
+            impact_sound.play()
             self.velocidad = random.randrange(2, 8)
             self.abajo=False
         if self.rect.top < 25:
+            impact_sound.play()
             self.velocidad = random.randrange(2, 8)
+            self.abajo=True
             self.abajo=True
 
 #Set class for gamestate (Stages/Screens)
@@ -137,6 +150,7 @@ class GameState():
             self.win_screen()
 
     def main_game(self):
+        music_menu.stop()
         global cronometro, segundo, facil, normal, dificil, puntuacion
         screen.blit(background, [0, 0])
         for event in pygame.event.get():
@@ -178,13 +192,18 @@ class GameState():
             cronometro = tiempoactual
         if segundo > 5:
             enemigo.add(asteroide2)
+        if 60>segundo:
+            music_level1.play()
         if segundo == 60:
             enemigo.add(asteroide3)
             facil = False
             normal = True
             jugador.vidas = 3
+            music_level1.stop()
         if segundo > 65:
             enemigo.add(asteroide4)
+        if 120>segundo>60:
+            music_level2.play()
         if segundo == 120:
             enemigo.add(asteroide5)
             normal = False
@@ -192,6 +211,9 @@ class GameState():
             jugador.vidas = 3
         if segundo > 125:
             enemigo.add(asteroide6)
+            music_level2.stop()
+        if 180>segundo>120:
+            music_level3.play()
         if segundo > 180:
             asteroide1.kill()
             asteroide2.kill()
@@ -341,8 +363,9 @@ class GameState():
         pygame.display.flip()
 
     def level1(self):
-        global segundo, puntuacion, facil, normal, dificil, cronometro
-        screen.blit(background,[0 , 0])
+        music_menu.stop()
+        global cronometro, segundo, facil, normal, dificil, puntuacion
+        screen.blit(background, [0, 0])
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -372,7 +395,7 @@ class GameState():
             jugador.vidas -= 1
             jugador.ultimogolpe = tiempoactual
         if tiempoactual - cronometro > 1000:
-            segundo += 1
+            segundo += 20
             if facil:
                 puntuacion += 1
             if normal:
@@ -382,13 +405,18 @@ class GameState():
             cronometro = tiempoactual
         if segundo > 5:
             enemigo.add(asteroide2)
+        if 60>segundo:
+            music_level1.play()
         if segundo == 60:
             enemigo.add(asteroide3)
             facil = False
             normal = True
             jugador.vidas = 3
+            music_level1.stop()
         if segundo > 65:
             enemigo.add(asteroide4)
+        if 120>segundo>60:
+            music_level2.play()
         if segundo == 120:
             enemigo.add(asteroide5)
             normal = False
@@ -396,6 +424,9 @@ class GameState():
             jugador.vidas = 3
         if segundo > 125:
             enemigo.add(asteroide6)
+            music_level2.stop()
+        if 180>segundo>120:
+            music_level3.play()
         if segundo > 180:
             asteroide1.kill()
             asteroide2.kill()
@@ -403,6 +434,7 @@ class GameState():
             asteroide4.kill()
             asteroide5.kill()
             asteroide6.kill()
+            dificil= False
         if jugador.vidas == 0:
             asteroide1.kill()
             asteroide2.kill()
@@ -418,7 +450,6 @@ class GameState():
         elif segundo >= 180:
             self.state = 'win_screen'
         pygame.display.flip()
-
     def level2(self):
         screen.blit(background,[0 , 0])
         global segundo, segundo_1, puntuacion, facil, normal, dificil, cronometro
@@ -461,6 +492,8 @@ class GameState():
             cronometro = tiempoactual
         if segundo_1 > 5:
             enemigo.add(asteroide2)
+        if 120 >= segundo_1:
+            music_level2.play()
         if segundo_1 >= 60:
             enemigo.add(asteroide3)
             normal = True
@@ -471,8 +504,11 @@ class GameState():
             normal = False
             dificil = True
             jugador.vidas = 3
+            music_level2.stop()
         if segundo_1 > 125:
             enemigo.add(asteroide6)
+        if 180>segundo>120:
+            music_level3.play()
         if segundo_1 > 180:
             asteroide1.kill()
             asteroide2.kill()
