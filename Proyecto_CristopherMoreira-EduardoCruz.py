@@ -526,9 +526,11 @@ class GameState():
             if dificil:
                 puntuacion += 5
             cronometro = tiempoactual
-        if segundo_1 > 5:
+        if segundo_1 == 61:
             enemigo.add(asteroide1)
             enemigo.add(asteroide2)
+            enemigo.add(asteroide3)
+            normal = True
         if 120 >= segundo_1:
             music_level2.play()
         if segundo_1 >= 60:
