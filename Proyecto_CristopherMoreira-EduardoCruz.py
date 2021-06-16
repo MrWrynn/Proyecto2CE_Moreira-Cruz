@@ -161,24 +161,25 @@ class GameState():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.key == pygame.K_ESCAPE:
-                self.state = 'intro'
-                segundo = 0
-                segundo_1 = 60
-                segundo_2 = 120
-                jugador.vidas = 3
-                puntuacion = 0
-                sprites.add(jugador)
-                enemigo.add(asteroide1)
-                facil = True
-                normal = False
-                dificil = False
-                asteroide1.kill()
-                asteroide2.kill()
-                asteroide3.kill()
-                asteroide4.kill()
-                asteroide5.kill()
-                asteroide6.kill()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.state = 'intro'
+                    segundo = 0
+                    segundo_1 = 60
+                    segundo_2 = 120
+                    jugador.vidas = 3
+                    puntuacion = 0
+                    sprites.add(jugador)
+                    enemigo.add(asteroide1)
+                    facil = True
+                    normal = False
+                    dificil = False
+                    asteroide1.kill()
+                    asteroide2.kill()
+                    asteroide3.kill()
+                    asteroide4.kill()
+                    asteroide5.kill()
+                    asteroide6.kill()
         sprites.update()
         enemigo.update()
         sprites.draw(screen)
@@ -387,24 +388,25 @@ class GameState():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.key == pygame.K_ESCAPE:
-                self.state = 'intro'
-                segundo = 0
-                segundo_1 = 60
-                segundo_2 = 120
-                jugador.vidas = 3
-                puntuacion = 0
-                sprites.add(jugador)
-                enemigo.add(asteroide1)
-                facil = True
-                normal = False
-                dificil = False
-                asteroide1.kill()
-                asteroide2.kill()
-                asteroide3.kill()
-                asteroide4.kill()
-                asteroide5.kill()
-                asteroide6.kill()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.state = 'intro'
+                    segundo = 0
+                    segundo_1 = 60
+                    segundo_2 = 120
+                    jugador.vidas = 3
+                    puntuacion = 0
+                    sprites.add(jugador)
+                    enemigo.add(asteroide1)
+                    facil = True
+                    normal = False
+                    dificil = False
+                    asteroide1.kill()
+                    asteroide2.kill()
+                    asteroide3.kill()
+                    asteroide4.kill()
+                    asteroide5.kill()
+                    asteroide6.kill()
         sprites.update()
         enemigo.update()
         sprites.draw(screen)
@@ -484,18 +486,25 @@ class GameState():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.key == pygame.K_ESCAPE:
-                self.state = 'intro'
-                segundo = 0
-                segundo_1 = 60
-                segundo_2 = 120
-                jugador.vidas = 3
-                puntuacion = 0
-                sprites.add(jugador)
-                enemigo.add(asteroide1)
-                facil = True
-                normal = False
-                dificil = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.state = 'intro'
+                    segundo = 0
+                    segundo_1 = 60
+                    segundo_2 = 120
+                    jugador.vidas = 3
+                    puntuacion = 0
+                    sprites.add(jugador)
+                    enemigo.add(asteroide1)
+                    facil = True
+                    normal = False
+                    dificil = False
+                    asteroide1.kill()
+                    asteroide2.kill()
+                    asteroide3.kill()
+                    asteroide4.kill()
+                    asteroide5.kill()
+                    asteroide6.kill()
         sprites.update()
         enemigo.update()
         sprites.draw(screen)
@@ -568,17 +577,25 @@ class GameState():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.key == pygame.K_ESCAPE:
-                self.state = 'intro'
-                segundo = 0
-                segundo_1 = 60
-                segundo_2 = 120
-                jugador.vidas = 3
-                puntuacion = 0
-                sprites.add(jugador)
-                facil = True
-                normal = False
-                dificil = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.state = 'intro'
+                    segundo = 0
+                    segundo_1 = 60
+                    segundo_2 = 120
+                    jugador.vidas = 3
+                    puntuacion = 0
+                    sprites.add(jugador)
+                    enemigo.add(asteroide1)
+                    facil = True
+                    normal = False
+                    dificil = False
+                    asteroide1.kill()
+                    asteroide2.kill()
+                    asteroide3.kill()
+                    asteroide4.kill()
+                    asteroide5.kill()
+                    asteroide6.kill()
         sprites.update()
         enemigo.update()
         sprites.draw(screen)
