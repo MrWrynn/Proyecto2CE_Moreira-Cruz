@@ -617,14 +617,11 @@ class GameState():
             if dificil:
                 puntuacion += 5
             cronometro = tiempoactual
-        if segundo_2 > 5:
+        if segundo_2 == 121:
             enemigo.add(asteroide1)
             enemigo.add(asteroide2)
-        if segundo_2 >= 60:
             enemigo.add(asteroide3)
-        if segundo_2 > 65:
             enemigo.add(asteroide4)
-        if segundo_2 >= 120:
             enemigo.add(asteroide5)
             normal = False
             dificil = True
