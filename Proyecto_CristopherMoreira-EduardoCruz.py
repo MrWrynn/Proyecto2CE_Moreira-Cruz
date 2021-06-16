@@ -1,57 +1,57 @@
-import pygame, sys, random, time
+iimport pygame, sys, random, time,vlc
 
-#Variables importantes
+# Variables importantes
 validChars = "abcdefghijklmnñopqrstuvwxyz"
 shiftChars = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
-WIDTH=650
-HEIGHT=650
-BLACK=(0,0,0) #Black color
-WHITE=(255,255,255) #White color
-GREEN=(0,255,0) #Green color
-RED=(255,0,0) #Red color
+WIDTH = 650
+HEIGHT = 650
+BLACK = (0, 0, 0)  # Black color
+WHITE = (255, 255, 255)  # White color
+GREEN = (0, 255, 0)  # Green color
+RED = (255, 0, 0)  # Red color
 shiftDown = False
-music_menu=vlc.MediaPlayer("menu_chill.wav")
-music_level1=vlc.MediaPlayer("Vulnerability - Final No Echo.wav")
-music_level2=vlc.MediaPlayer("Final Boss Battle 6 V1.wav")
-music_level3=vlc.MediaPlayer("Wazeel's Neofortress.it")
+music_menu = vlc.MediaPlayer("menu_chill.wav")
+music_level1 = vlc.MediaPlayer("Vulnerability - Final No Echo.wav")
+music_level2 = vlc.MediaPlayer("Final Boss Battle 6 V1.wav")
+music_level3 = vlc.MediaPlayer("Wazeel's Neofortress.it")
 pygame.mixer.init()
-impact_sound=pygame.mixer.Sound("thud3.wav")
-ship_impact=pygame.mixer.Sound("clink3.wav")
+impact_sound = pygame.mixer.Sound("thud3.wav")
+ship_impact = pygame.mixer.Sound("clink3.wav")
 
+pygame.init()  # Initialize pygame
+pygame.font.init()  # Initialize font
+pygame.mixer.init()  # initialize pygame mixer (Music/sound)
+screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Set screen
+pygame.display.set_caption("OPERATION MOON LIGHT")  # Set window name
+clock = pygame.time.Clock()  # Set FPS clock
 
-pygame.init() #Initialize pygame
-pygame.font.init() #Initialize font
-pygame.mixer.init() #initialize pygame mixer (Music/sound)
-screen= pygame.display.set_mode((WIDTH, HEIGHT)) #Set screen
-pygame.display.set_caption("OPERATION MOON LIGHT") #Set window name
-clock = pygame.time.Clock() #Set FPS clock
-
-#Arreglar
-naveprincipal = pygame.image.load("assets/blueship.png")
-spriteasteroide=pygame.image.load("assets/bullet.png")
-fondojuego = pygame.image.load("assets/spacebg3.png")
+# Arreglar
+naveprincipal = pygame.image.load("ship (1).gif")
+spriteasteroide = pygame.image.load("Asteroid Brown.png")
+fondojuego = pygame.image.load("fondo-blanco.jpg")
 fuenteletra = pygame.font.match_font("Arial", 15)
 puntuacion = 0
 segundo = 0
 segundo_1 = 60
 segundo_2 = 120
-cronometro=0
-nivel =1
-facil=True
-normal=False
-dificil=False
+cronometro = 0
+nivel = 1
+facil = True
+normal = False
+dificil = False
 
-#Functions
-#Draw text on the screen
+
+# Functions
+# Draw text on the screen
 def draw_text(surface, text, size, x, y):
-    font= pygame.font.SysFont("serif", size)
+    font = pygame.font.SysFont("serif", size)
     text_surface = font.render(text, True, BLACK)
-    text_rect =  text_surface.get_rect()
+    text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
     surface.blit(text_surface, text_rect)
 
 
-#CLASSES
+# CLASSES
 
 class Jugador(pygame.sprite.Sprite):
     # Sprite del jugador
@@ -71,56 +71,60 @@ class Jugador(pygame.sprite.Sprite):
         teclas = pygame.key.get_pressed()
         if teclas[pygame.K_RIGHT] and 650 > self.rect.right:
             self.rect.x += 6
-        if teclas[pygame.K_LEFT] and self.rect.left > 50:
+        if teclas[pygame.K_LEFT] and self.rect.left > 5:
             self.rect.x -= 6
         if teclas[pygame.K_UP] and self.rect.top > 50:
             self.rect.y -= 6
         if teclas[pygame.K_DOWN] and 650 > self.rect.bottom:
             self.rect.y += 6
 
+
 class Asteroide(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.image = pygame.transform.scale(spriteasteroide, (50, 50))
         self.rect = self.image.get_rect()
-        self.rect.x = random.randrange(650-self.rect.width)
+        self.rect.x = random.randrange(650 - self.rect.width)
         self.rect.y = 25
-        self.velocidad=random.randrange(2, 8)
-        self.derecha=True
-        self.abajo=True
+        self.velocidad = random.randrange(2, 8)
+        self.derecha = True
+        self.abajo = True
 
     def update(self):
         self.velocidadx = self.velocidad
         self.velocidady = self.velocidad
         if self.derecha:
             self.rect.x += self.velocidadx
-        else: self.rect.x -= self.velocidadx
+        else:
+            self.rect.x -= self.velocidadx
         if self.abajo:
             self.rect.y += self.velocidady
-        else: self.rect.y -= self.velocidady
-         if self.rect.right >650:
+        else:
+            self.rect.y -= self.velocidady
+        if self.rect.right > 650:
             impact_sound.play()
-            self.velocidad=random.randrange(2, 8)
-            self.derecha=False
+            self.velocidad = random.randrange(2, 8)
+            self.derecha = False
         if self.rect.left < 0:
             impact_sound.play()
             self.velocidad = random.randrange(2, 8)
-            self.derecha=True
+            self.derecha = True
         if self.rect.bottom > 650:
             impact_sound.play()
             self.velocidad = random.randrange(2, 8)
-            self.abajo=False
+            self.abajo = False
         if self.rect.top < 25:
             impact_sound.play()
             self.velocidad = random.randrange(2, 8)
-            self.abajo=True
-            self.abajo=True
+            self.abajo = True
+            self.abajo = True
 
-#Set class for gamestate (Stages/Screens)
+
+# Set class for gamestate (Stages/Screens)
 class GameState():
     def __init__(self):
         super().__init__()
-        self.state= 'nameScreen'
+        self.state = 'nameScreen'
 
     # Set screen manager (Changes betweeen screens)
     def StateManager(self):
@@ -159,16 +163,22 @@ class GameState():
                 sys.exit()
             if event.key == pygame.K_ESCAPE:
                 self.state = 'intro'
-                segundo =0
-                segundo_1=60
-                segundo_2=120
-                jugador.vidas=3
-                puntuacion=0
+                segundo = 0
+                segundo_1 = 60
+                segundo_2 = 120
+                jugador.vidas = 3
+                puntuacion = 0
                 sprites.add(jugador)
                 enemigo.add(asteroide1)
                 facil = True
                 normal = False
                 dificil = False
+                asteroide1.kill()
+                asteroide2.kill()
+                asteroide3.kill()
+                asteroide4.kill()
+                asteroide5.kill()
+                asteroide6.kill()
         sprites.update()
         enemigo.update()
         sprites.draw(screen)
@@ -181,8 +191,9 @@ class GameState():
         if impactos and (tiempoactual - jugador.ultimogolpe) > jugador.invencible:
             jugador.vidas -= 1
             jugador.ultimogolpe = tiempoactual
+            ship_impact.play()
         if tiempoactual - cronometro > 1000:
-            segundo += 20
+            segundo += 1
             if facil:
                 puntuacion += 1
             if normal:
@@ -190,9 +201,10 @@ class GameState():
             if dificil:
                 puntuacion += 5
             cronometro = tiempoactual
+        enemigo.add(asteroide1)
         if segundo > 5:
             enemigo.add(asteroide2)
-        if 60>segundo:
+        if 60 > segundo:
             music_level1.play()
         if segundo == 60:
             enemigo.add(asteroide3)
@@ -202,7 +214,7 @@ class GameState():
             music_level1.stop()
         if segundo > 65:
             enemigo.add(asteroide4)
-        if 120>segundo>60:
+        if 120 > segundo > 60:
             music_level2.play()
         if segundo == 120:
             enemigo.add(asteroide5)
@@ -212,7 +224,7 @@ class GameState():
         if segundo > 125:
             enemigo.add(asteroide6)
             music_level2.stop()
-        if 180>segundo>120:
+        if 180 > segundo > 120:
             music_level3.play()
         if segundo > 180:
             asteroide1.kill()
@@ -221,7 +233,7 @@ class GameState():
             asteroide4.kill()
             asteroide5.kill()
             asteroide6.kill()
-            dificil= False
+            dificil = False
         if jugador.vidas == 0:
             asteroide1.kill()
             asteroide2.kill()
@@ -238,7 +250,7 @@ class GameState():
             self.state = 'win_screen'
         pygame.display.flip()
 
-    #Set name screen
+    # Set name screen
     def nameScreen(self):
         global shiftDown
         screen.blit(background, [0, 0])
@@ -264,8 +276,12 @@ class GameState():
                     if len(textBox.text) > 0:
                         self.state = 'intro'
 
-    #Set main menu screen
+    # Set main menu screen
     def intro(self):
+        music_menu.play()
+        music_level1.stop()
+        music_level2.stop()
+        music_level3.stop()
         screen.blit(background, [0, 0])
         draw_text(screen, "OPERATION MOON LIGHT", 65, WIDTH // 2, HEIGHT // 4)
         draw_text(screen, "Presione una tecla para proceder", 27, WIDTH // 2, HEIGHT // 2)
@@ -291,7 +307,7 @@ class GameState():
                     self.state = 'levels'
         pygame.display.flip()
 
-    #Set about screen
+    # Set about screen
     def about(self):
         screen.blit(background, [0, 0])
         draw_text(screen, "OPERATION MOON LIGHT", 65, WIDTH // 2, HEIGHT // 4)
@@ -311,7 +327,7 @@ class GameState():
                     self.state = 'intro'
         pygame.display.flip()
 
-    #Set scores screen
+    # Set scores screen
     def scores(self):
         screen.blit(background, [0, 0])
         for event in pygame.event.get():
@@ -323,14 +339,15 @@ class GameState():
                     self.state = 'intro'
         pygame.display.flip()
 
-    #Set intructions screen
+    # Set intructions screen
     def rules(self):
         screen.blit(background, [0, 0])
         draw_text(screen, "OPERATION MOON LIGHT", 65, WIDTH // 2, HEIGHT // 4)
         draw_text(screen, "Para moverse utilice las flechas del teclado", 27, WIDTH // 2, HEIGHT // 2)
-        draw_text(screen, "Para disparar utilice la barra espaciadora", 27, WIDTH//2, HEIGHT//2 +32)
-        draw_text(screen, "Para volver a la pantalla inicial presione la tecla escape", 27, WIDTH // 2, HEIGHT//2 +32*2)
-        draw_text(screen, "Mientras juega, presione escape para volver al incio", 27, WIDTH // 2, HEIGHT//2 +32*3)
+        draw_text(screen, "Para disparar utilice la barra espaciadora", 27, WIDTH // 2, HEIGHT // 2 + 32)
+        draw_text(screen, "Para volver a la pantalla inicial presione la tecla escape", 27, WIDTH // 2,
+                  HEIGHT // 2 + 32 * 2)
+        draw_text(screen, "Mientras juega, presione escape para volver al incio", 27, WIDTH // 2, HEIGHT // 2 + 32 * 3)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -372,11 +389,108 @@ class GameState():
                 sys.exit()
             if event.key == pygame.K_ESCAPE:
                 self.state = 'intro'
-                segundo =0
-                segundo_1=60
-                segundo_2=120
-                jugador.vidas=3
-                puntuacion=0
+                segundo = 0
+                segundo_1 = 60
+                segundo_2 = 120
+                jugador.vidas = 3
+                puntuacion = 0
+                sprites.add(jugador)
+                enemigo.add(asteroide1)
+                facil = True
+                normal = False
+                dificil = False
+                asteroide1.kill()
+                asteroide2.kill()
+                asteroide3.kill()
+                asteroide4.kill()
+                asteroide5.kill()
+                asteroide6.kill()
+        sprites.update()
+        enemigo.update()
+        sprites.draw(screen)
+        enemigo.draw(screen)
+        draw_text(screen, "Puntos : " + str(puntuacion), 25, WIDTH - 100, 10)
+        draw_text(screen, "Vida : " + str(jugador.vidas), 25, WIDTH - 400, 10)
+        draw_text(screen, "Tiempo : " + str(segundo), 25, WIDTH - 550, 10)
+        tiempoactual = pygame.time.get_ticks()
+        impactos = pygame.sprite.spritecollide(jugador, enemigo, False)
+        if impactos and (tiempoactual - jugador.ultimogolpe) > jugador.invencible:
+            jugador.vidas -= 1
+            jugador.ultimogolpe = tiempoactual
+            ship_impact.play()
+        if tiempoactual - cronometro > 1000:
+            segundo += 1
+            if facil:
+                puntuacion += 1
+            if normal:
+                puntuacion += 3
+            if dificil:
+                puntuacion += 5
+            cronometro = tiempoactual
+        enemigo.add(asteroide1)
+        if segundo > 5:
+            enemigo.add(asteroide2)
+        if 60 > segundo:
+            music_level1.play()
+        if segundo == 60:
+            enemigo.add(asteroide3)
+            facil = False
+            normal = True
+            jugador.vidas = 3
+            music_level1.stop()
+        if segundo > 65:
+            enemigo.add(asteroide4)
+        if 120 > segundo > 60:
+            music_level2.play()
+        if segundo == 120:
+            enemigo.add(asteroide5)
+            normal = False
+            dificil = True
+            jugador.vidas = 3
+        if segundo > 125:
+            enemigo.add(asteroide6)
+            music_level2.stop()
+        if 180 > segundo > 120:
+            music_level3.play()
+        if segundo > 180:
+            asteroide1.kill()
+            asteroide2.kill()
+            asteroide3.kill()
+            asteroide4.kill()
+            asteroide5.kill()
+            asteroide6.kill()
+            dificil = False
+        if jugador.vidas == 0:
+            asteroide1.kill()
+            asteroide2.kill()
+            asteroide3.kill()
+            asteroide4.kill()
+            asteroide5.kill()
+            asteroide6.kill()
+            facil = False
+            normal = False
+            dificil = False
+        if jugador.vidas <= 0:
+            self.state = 'go_screen'
+        elif segundo >= 180:
+            self.state = 'win_screen'
+        pygame.display.flip()
+
+    def level2(self):
+        music_menu.stop()
+        screen.blit(background, [0, 0])
+        global segundo, segundo_1, puntuacion, facil, normal, dificil, cronometro
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.key == pygame.K_ESCAPE:
+                self.state = 'intro'
+                segundo = 0
+                segundo_1 = 60
+                segundo_2 = 120
+                jugador.vidas = 3
+                puntuacion = 0
                 sprites.add(jugador)
                 enemigo.add(asteroide1)
                 facil = True
@@ -394,94 +508,7 @@ class GameState():
         if impactos and (tiempoactual - jugador.ultimogolpe) > jugador.invencible:
             jugador.vidas -= 1
             jugador.ultimogolpe = tiempoactual
-        if tiempoactual - cronometro > 1000:
-            segundo += 20
-            if facil:
-                puntuacion += 1
-            if normal:
-                puntuacion += 3
-            if dificil:
-                puntuacion += 5
-            cronometro = tiempoactual
-        if segundo > 5:
-            enemigo.add(asteroide2)
-        if 60>segundo:
-            music_level1.play()
-        if segundo == 60:
-            enemigo.add(asteroide3)
-            facil = False
-            normal = True
-            jugador.vidas = 3
-            music_level1.stop()
-        if segundo > 65:
-            enemigo.add(asteroide4)
-        if 120>segundo>60:
-            music_level2.play()
-        if segundo == 120:
-            enemigo.add(asteroide5)
-            normal = False
-            dificil = True
-            jugador.vidas = 3
-        if segundo > 125:
-            enemigo.add(asteroide6)
-            music_level2.stop()
-        if 180>segundo>120:
-            music_level3.play()
-        if segundo > 180:
-            asteroide1.kill()
-            asteroide2.kill()
-            asteroide3.kill()
-            asteroide4.kill()
-            asteroide5.kill()
-            asteroide6.kill()
-            dificil= False
-        if jugador.vidas == 0:
-            asteroide1.kill()
-            asteroide2.kill()
-            asteroide3.kill()
-            asteroide4.kill()
-            asteroide5.kill()
-            asteroide6.kill()
-            facil = False
-            normal = False
-            dificil = False
-        if jugador.vidas <= 0:
-            self.state = 'go_screen'
-        elif segundo >= 180:
-            self.state = 'win_screen'
-        pygame.display.flip()
-    def level2(self):
-        screen.blit(background,[0 , 0])
-        global segundo, segundo_1, puntuacion, facil, normal, dificil, cronometro
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.key == pygame.K_ESCAPE:
-                self.state = 'intro'
-                segundo =0
-                segundo_1=60
-                segundo_2=120
-                jugador.vidas=3
-                puntuacion=0
-                sprites.add(jugador)
-                enemigo.add(asteroide1)
-                facil = True
-                normal = False
-                dificil = False        
-        sprites.update()
-        enemigo.update()
-        sprites.draw(screen)
-        enemigo.draw(screen)
-        draw_text(screen, "Puntos : " + str(puntuacion), 25, WIDTH - 100, 10)
-        draw_text(screen, "Vida : " + str(jugador.vidas), 25, WIDTH - 400, 10)
-        draw_text(screen, "Tiempo : " + str(segundo), 25, WIDTH - 550, 10)
-        tiempoactual = pygame.time.get_ticks()
-        impactos = pygame.sprite.spritecollide(jugador, enemigo, False)
-        if impactos and (tiempoactual - jugador.ultimogolpe) > jugador.invencible:
-            print("Hola")
-            jugador.vidas -= 1
-            jugador.ultimogolpe = tiempoactual
+            ship_impact.play()
         if tiempoactual - cronometro > 1000:
             segundo_1 += 1
             segundo += 1
@@ -491,6 +518,7 @@ class GameState():
                 puntuacion += 5
             cronometro = tiempoactual
         if segundo_1 > 5:
+            enemigo.add(asteroide1)
             enemigo.add(asteroide2)
         if 120 >= segundo_1:
             music_level2.play()
@@ -507,7 +535,7 @@ class GameState():
             music_level2.stop()
         if segundo_1 > 125:
             enemigo.add(asteroide6)
-        if 180>segundo>120:
+        if 180 > segundo_1 > 120:
             music_level3.play()
         if segundo_1 > 180:
             asteroide1.kill()
@@ -533,6 +561,7 @@ class GameState():
         pygame.display.flip()
 
     def level3(self):
+        music_menu.stop()
         screen.blit(background, [0, 0])
         global segundo, segundo_2, puntuacion, facil, normal, dificil, cronometro
         for event in pygame.event.get():
@@ -541,13 +570,12 @@ class GameState():
                 sys.exit()
             if event.key == pygame.K_ESCAPE:
                 self.state = 'intro'
-                segundo =0
-                segundo_1=60
-                segundo_2=120
-                jugador.vidas=3
-                puntuacion=0
+                segundo = 0
+                segundo_1 = 60
+                segundo_2 = 120
+                jugador.vidas = 3
+                puntuacion = 0
                 sprites.add(jugador)
-                enemigo.add(asteroide1)
                 facil = True
                 normal = False
                 dificil = False
@@ -563,6 +591,7 @@ class GameState():
         if impactos and (tiempoactual - jugador.ultimogolpe) > jugador.invencible:
             jugador.vidas -= 1
             jugador.ultimogolpe = tiempoactual
+            ship_impact.play()
         if tiempoactual - cronometro > 1000:
             segundo_2 += 1
             segundo += 1
@@ -570,6 +599,7 @@ class GameState():
                 puntuacion += 5
             cronometro = tiempoactual
         if segundo_2 > 5:
+            enemigo.add(asteroide1)
             enemigo.add(asteroide2)
         if segundo_2 >= 60:
             enemigo.add(asteroide3)
@@ -581,6 +611,8 @@ class GameState():
             dificil = True
         if segundo_2 > 125:
             enemigo.add(asteroide6)
+        if 180 > segundo_2 > 120:
+            music_level3.play()
         if segundo_2 > 180:
             asteroide1.kill()
             asteroide2.kill()
@@ -600,12 +632,15 @@ class GameState():
             dificil = False
         if jugador.vidas <= 0:
             self.state = 'go_screen'
-        elif segundo >=180:
+        elif segundo >= 180:
             self.state = 'win_screen'
         pygame.display.flip()
 
-    #Set game over screen
+    # Set game over screen
     def go_screen(self):
+        music_level1.stop()
+        music_level2.stop()
+        music_level3.stop()
         global puntuacion, segundo, segundo_1, segundo_2, facil, normal, dificil
         screen.blit(background, [0, 0])
         draw_text(screen, "Has sido derrotado", 25, WIDTH - 300, 10)
@@ -616,11 +651,11 @@ class GameState():
                 sys.exit()
             if event.key == pygame.K_ESCAPE:
                 self.state = 'intro'
-                segundo =0
-                segundo_1=60
-                segundo_2=120
-                jugador.vidas=3
-                puntuacion=0
+                segundo = 0
+                segundo_1 = 60
+                segundo_2 = 120
+                jugador.vidas = 3
+                puntuacion = 0
                 sprites.add(jugador)
                 enemigo.add(asteroide1)
                 facil = True
@@ -629,6 +664,7 @@ class GameState():
         pygame.display.flip()
 
     def win_screen(self):
+        music_level3.stop()
         global puntuacion, segundo, segundo_1, segundo_2, facil, normal, dificil
         screen.blit(background, [0, 0])
         draw_text(screen, "Has ganado", 25, WIDTH - 300, 10)
@@ -651,7 +687,8 @@ class GameState():
                 dificil = False
         pygame.display.flip()
 
-#Set class for TextBox (Write your name menu)
+
+# Set class for TextBox (Write your name menu)
 class TextBox(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -674,29 +711,30 @@ class TextBox(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = old_rect_pos
 
-#Variables
-background=pygame.image.load("spacebg3.jpg").convert()
-game_state=GameState()
+
+# Variables
+background = pygame.image.load("fondo-blanco.jpg").convert()
+game_state = GameState()
 textBox = TextBox()
 textBox.rect.center = [325, 325]
 
-#Arreglar
-sprites=pygame.sprite.Group()
-jugador=Jugador()
+# Arreglar
+sprites = pygame.sprite.Group()
+jugador = Jugador()
 sprites.add(jugador)
 
-enemigo=pygame.sprite.Group()
-asteroide1=Asteroide()
-asteroide2=Asteroide()
-asteroide3=Asteroide()
-asteroide4=Asteroide()
-asteroide5=Asteroide()
-asteroide6=Asteroide()
+enemigo = pygame.sprite.Group()
+asteroide1 = Asteroide()
+asteroide2 = Asteroide()
+asteroide3 = Asteroide()
+asteroide4 = Asteroide()
+asteroide5 = Asteroide()
+asteroide6 = Asteroide()
 enemigo.add(asteroide1)
 
-#Main-loop
+# Main-loop
 while True:
     game_state.StateManager()
     clock.tick(60)  # FPS
-
+ 
 pygame.quit()
