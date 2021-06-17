@@ -1,4 +1,4 @@
-iimport pygame, sys, random, time,vlc
+import pygame, sys, random, time, vlc
 
 # Variables importantes
 validChars = "abcdefghijklmnñopqrstuvwxyz"
@@ -17,6 +17,31 @@ music_level3 = vlc.MediaPlayer("Wazeel's Neofortress.it")
 pygame.mixer.init()
 impact_sound = pygame.mixer.Sound("thud3.wav")
 ship_impact = pygame.mixer.Sound("clink3.wav")
+arreglo = []
+nombre_archivo = ""
+a=True
+
+def quicksort(arreglo, izquierda, derecha):
+    if izquierda < derecha:
+        indiceParticion = particion(arreglo, izquierda, derecha)
+        quicksort(arreglo, izquierda, indiceParticion)
+        quicksort(arreglo, indiceParticion + 1, derecha)
+
+
+def particion(arreglo, izquierda, derecha):
+    pivote = arreglo[izquierda]
+    while True:
+        while arreglo[izquierda] < pivote:
+            izquierda += 1
+        while arreglo[derecha] > pivote:
+            derecha -= 1
+        if izquierda >= derecha:
+            return derecha
+        else:
+            arreglo[izquierda], arreglo[derecha] = arreglo[derecha], arreglo[izquierda]
+            izquierda += 1
+            derecha -= 1
+
 
 pygame.init()  # Initialize pygame
 pygame.font.init()  # Initialize font
@@ -82,7 +107,7 @@ class Jugador(pygame.sprite.Sprite):
 class Asteroide(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.transform.scale(spriteasteroide, (50, 50))
+        self.image = pygame.transform.scale(spriteasteroide, (30, 30 ))
         self.rect = self.image.get_rect()
         self.rect.x = random.randrange(650 - self.rect.width)
         self.rect.y = 25
@@ -208,6 +233,8 @@ class GameState():
         if 60 > segundo:
             music_level1.play()
         if segundo == 60:
+            if jugador.vidas==3 and facil:
+                puntuacion+=20
             enemigo.add(asteroide3)
             facil = False
             normal = True
@@ -218,6 +245,8 @@ class GameState():
         if 120 > segundo > 60:
             music_level2.play()
         if segundo == 120:
+            if jugador.vidas==3 and normal:
+                puntuacion+=30
             enemigo.add(asteroide5)
             normal = False
             dificil = True
@@ -227,7 +256,9 @@ class GameState():
             music_level2.stop()
         if 180 > segundo > 120:
             music_level3.play()
-        if segundo > 180:
+        if segundo == 180:
+            if jugador.vidas==3 and dificil:
+                puntuacion+=50
             asteroide1.kill()
             asteroide2.kill()
             asteroide3.kill()
@@ -435,6 +466,8 @@ class GameState():
         if 60 > segundo:
             music_level1.play()
         if segundo == 60:
+            if jugador.vidas==3 and facil:
+                puntuacion+=20
             enemigo.add(asteroide3)
             facil = False
             normal = True
@@ -445,6 +478,8 @@ class GameState():
         if 120 > segundo > 60:
             music_level2.play()
         if segundo == 120:
+            if jugador.vidas==3 and normal:
+                puntuacion+=30
             enemigo.add(asteroide5)
             normal = False
             dificil = True
@@ -455,6 +490,8 @@ class GameState():
         if 180 > segundo > 120:
             music_level3.play()
         if segundo > 180:
+            if jugador.vidas==3 and dificil:
+                puntuacion+=50
             asteroide1.kill()
             asteroide2.kill()
             asteroide3.kill()
@@ -539,6 +576,8 @@ class GameState():
         if segundo_1 > 65:
             enemigo.add(asteroide4)
         if segundo_1 == 120:
+            if jugador.vidas==3 and normal:
+                puntuacion+=30
             enemigo.add(asteroide5)
             normal = False
             dificil = True
@@ -549,12 +588,15 @@ class GameState():
         if 180 > segundo_1 > 120:
             music_level3.play()
         if segundo_1 > 180:
+            if jugador.vidas==3 and dificil:
+                puntuacion+=50
             asteroide1.kill()
             asteroide2.kill()
             asteroide3.kill()
             asteroide4.kill()
             asteroide5.kill()
             asteroide6.kill()
+            dificil=False
         if jugador.vidas == 0:
             asteroide1.kill()
             asteroide2.kill()
@@ -630,12 +672,15 @@ class GameState():
         if 180 > segundo_2 > 120:
             music_level3.play()
         if segundo_2 > 180:
+            if jugador.vidas==3 and dificil:
+                puntuacion+=50
             asteroide1.kill()
             asteroide2.kill()
             asteroide3.kill()
             asteroide4.kill()
             asteroide5.kill()
             asteroide6.kill()
+            dificil=False
         if jugador.vidas == 0:
             asteroide1.kill()
             asteroide2.kill()
@@ -657,10 +702,35 @@ class GameState():
         music_level1.stop()
         music_level2.stop()
         music_level3.stop()
-        global puntuacion, segundo, segundo_1, segundo_2, facil, normal, dificil
+        global puntuacion, segundo, segundo_1, segundo_2, facil, normal, dificil,arreglo,a
         screen.blit(background, [0, 0])
         draw_text(screen, "Has sido derrotado", 25, WIDTH - 300, 10)
         draw_text(screen, "Su puntuación fue de : " + str(puntuacion), 25, WIDTH - 300, 40)
+
+        with open('puntos.txt', "r") as archivo:
+            for linea in archivo:
+                #
+                linea = linea.rstrip()
+                #
+                lista = linea.split()
+                #
+                calificacion = int(lista[0])
+                nombre = lista[1]
+                arreglo = arreglo + [[calificacion] + [nombre]]
+
+        if a:
+            arreglo += [[puntuacion, "nuevo"]]
+            quicksort(arreglo, 0, len(arreglo) - 1)
+            del arreglo[0]
+            print(arreglo)
+            a=False
+            archivo.close()
+
+        if[puntuacion, "nuevo"] in arreglo:
+            posicion = 7-(arreglo.index([puntuacion, "nuevo"]))
+            draw_text(screen, "eres el nuevo número: " + str(posicion), 25, WIDTH - 300,70)
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -674,6 +744,8 @@ class GameState():
                 puntuacion = 0
                 sprites.add(jugador)
                 enemigo.add(asteroide1)
+                a=True
+                arreglo=[]
                 facil = True
                 normal = False
                 dificil = False
@@ -681,10 +753,34 @@ class GameState():
 
     def win_screen(self):
         music_level3.stop()
-        global puntuacion, segundo, segundo_1, segundo_2, facil, normal, dificil
+        global puntuacion, segundo, segundo_1, segundo_2, facil, normal, dificil,arreglo,a
         screen.blit(background, [0, 0])
         draw_text(screen, "Has ganado", 25, WIDTH - 300, 10)
         draw_text(screen, "Su puntuación fue de : " + str(puntuacion), 25, WIDTH - 300, 40)
+
+        with open('puntos.txt', "r") as archivo:
+            for linea in archivo:
+                #
+                linea = linea.rstrip()
+                #
+                lista = linea.split()
+                #
+                calificacion = int(lista[0])
+                nombre = lista[1]
+                arreglo = arreglo + [[calificacion] + [nombre]]
+
+        if a:
+            arreglo += [[puntuacion, "nuevo"]]
+            quicksort(arreglo, 0, len(arreglo) - 1)
+            del arreglo[0]
+            a = False
+            archivo.close()
+
+        if [puntuacion, "nuevo"] in arreglo:
+            posicion=7-(arreglo.index([puntuacion, "nuevo"]))
+            draw_text(screen, "eres el nuevo : " + str(posicion), 25, WIDTH - 300, 70)
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -698,6 +794,8 @@ class GameState():
                 puntuacion = 0
                 sprites.add(jugador)
                 enemigo.add(asteroide1)
+                a=True
+                arreglo=[]
                 facil = True
                 normal = False
                 dificil = False
@@ -752,5 +850,5 @@ enemigo.add(asteroide1)
 while True:
     game_state.StateManager()
     clock.tick(60)  # FPS
- 
+
 pygame.quit()
