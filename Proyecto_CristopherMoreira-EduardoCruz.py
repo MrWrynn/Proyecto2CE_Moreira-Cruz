@@ -53,7 +53,7 @@ clock = pygame.time.Clock()  # Set FPS clock
 # Arreglar
 naveprincipal = pygame.image.load("ship (1).gif")
 spriteasteroide = pygame.image.load("Asteroid Brown.png")
-fondojuego = pygame.image.load("fondo-blanco.jpg")
+fondojuego = pygame.image.load("spacebg3.png")
 fuenteletra = pygame.font.match_font("Arial", 15)
 puntuacion = 0
 segundo = 0
@@ -832,7 +832,7 @@ class TextBox(pygame.sprite.Sprite):
 
 
 # Variables
-background = pygame.image.load("fondo-blanco.jpg").convert()
+background = pygame.image.load("spacebg3.png").convert()
 game_state = GameState()
 textBox = TextBox()
 textBox.rect.center = [325, 325]
