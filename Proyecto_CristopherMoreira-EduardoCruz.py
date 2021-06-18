@@ -712,44 +712,44 @@ class GameState():
                 #
                 linea = linea.rstrip()
                 #
-                lista = linea.split()
+                lista = linea.split("\t")
                 #
-                calificacion = int(lista[0])
+                calificacion =int(lista[0])
                 nombre = lista[1]
                 arreglo = arreglo + [[calificacion] + [nombre]]
 
-        if a:
-            arreglo += [[puntuacion, "nuevo"]]
-            quicksort(arreglo, 0, len(arreglo) - 1)
-            del arreglo[0]
-            print(arreglo)
-            a=False
-            archivo.close()
+            if a:
+                arreglo += [[puntuacion, "nuevo"]]
+                quicksort(arreglo, 0, len(arreglo) - 1)
+                del arreglo[0]
+                a=False
+                with open('puntos.txt', "w") as archivo:
+                    archivo.seek(0)
+                    for i in arreglo:
+                        archivo.write("{}\t{}\n".format(i[0], i[1]))
 
         if[puntuacion, "nuevo"] in arreglo:
             posicion = 7-(arreglo.index([puntuacion, "nuevo"]))
             draw_text(screen, "eres el nuevo número: " + str(posicion), 25, WIDTH - 300,70)
 
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    self.state = 'intro'
-                    segundo = 0
-                    segundo_1 = 60
-                    segundo_2 = 120
-                    jugador.vidas = 3
-                    puntuacion = 0
-                    sprites.add(jugador)
-                    enemigo.add(asteroide1)
-                    a=True
-                    arreglo=[]
-                    facil = True
-                    normal = False
-                    dificil = False
+            if event.key == pygame.K_ESCAPE:
+                self.state = 'intro'
+                segundo = 0
+                segundo_1 = 60
+                segundo_2 = 120
+                jugador.vidas = 3
+                puntuacion = 0
+                sprites.add(jugador)
+                enemigo.add(asteroide1)
+                a=True
+                arreglo=[]
+                facil = True
+                normal = False
+                dificil = False
         pygame.display.flip()
 
     def win_screen(self):
@@ -759,12 +759,12 @@ class GameState():
         draw_text(screen, "Has ganado", 25, WIDTH - 300, 10)
         draw_text(screen, "Su puntuación fue de : " + str(puntuacion), 25, WIDTH - 300, 40)
 
-        with open('puntos.txt', "r") as archivo:
+        with open('puntos.txt', "r+") as archivo:
             for linea in archivo:
                 #
                 linea = linea.rstrip()
                 #
-                lista = linea.split()
+                lista = linea.split("\t")
                 #
                 calificacion = int(lista[0])
                 nombre = lista[1]
@@ -775,7 +775,11 @@ class GameState():
             quicksort(arreglo, 0, len(arreglo) - 1)
             del arreglo[0]
             a = False
-            archivo.close()
+            with open('puntos.txt', "r+") as archivo:
+                archivo.seek(0)
+                for i in arreglo:
+                    archivo.write("{}\t{}\n".format(i[0], i[1]))
+
 
         if [puntuacion, "nuevo"] in arreglo:
             posicion=7-(arreglo.index([puntuacion, "nuevo"]))
@@ -786,21 +790,20 @@ class GameState():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    self.state = 'intro'
-                    segundo = 0
-                    segundo_1 = 60
-                    segundo_2 = 120
-                    jugador.vidas = 3
-                    puntuacion = 0
-                    sprites.add(jugador)
-                    enemigo.add(asteroide1)
-                    a=True
-                    arreglo=[]
-                    facil = True
-                    normal = False
-                    dificil = False
+            if event.key == pygame.K_ESCAPE:
+                self.state = 'intro'
+                segundo = 0
+                segundo_1 = 60
+                segundo_2 = 120
+                jugador.vidas = 3
+                puntuacion = 0
+                sprites.add(jugador)
+                enemigo.add(asteroide1)
+                a=True
+                arreglo=[]
+                facil = True
+                normal = False
+                dificil = False
         pygame.display.flip()
 
 
