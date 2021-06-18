@@ -719,7 +719,7 @@ class GameState():
                 arreglo = arreglo + [[calificacion] + [nombre]]
 
             if a:
-                arreglo += [[puntuacion, "nuevo"]]
+                arreglo += [[puntuacion, str(textBox.text)]]
                 quicksort(arreglo, 0, len(arreglo) - 1)
                 del arreglo[0]
                 a=False
@@ -728,8 +728,8 @@ class GameState():
                     for i in arreglo:
                         archivo.write("{}\t{}\n".format(i[0], i[1]))
 
-        if[puntuacion, "nuevo"] in arreglo:
-            posicion = 7-(arreglo.index([puntuacion, "nuevo"]))
+        if[puntuacion, str(textBox.text)] in arreglo:
+            posicion = 7-(arreglo.index([puntuacion, str(textBox.text)]))
             draw_text(screen, "eres el nuevo número: " + str(posicion), 25, WIDTH - 300,70)
 
         for event in pygame.event.get():
@@ -771,7 +771,7 @@ class GameState():
                 arreglo = arreglo + [[calificacion] + [nombre]]
 
         if a:
-            arreglo += [[puntuacion, "nuevo"]]
+            arreglo += [[puntuacion, str(textBox.text)]]
             quicksort(arreglo, 0, len(arreglo) - 1)
             del arreglo[0]
             a = False
@@ -781,8 +781,8 @@ class GameState():
                     archivo.write("{}\t{}\n".format(i[0], i[1]))
 
 
-        if [puntuacion, "nuevo"] in arreglo:
-            posicion=7-(arreglo.index([puntuacion, "nuevo"]))
+        if [puntuacion, str(textBox.text)] in arreglo:
+            posicion=7-(arreglo.index([puntuacion, str(textBox.text)]))
             draw_text(screen, "eres el nuevo : " + str(posicion), 25, WIDTH - 300, 70)
 
 
