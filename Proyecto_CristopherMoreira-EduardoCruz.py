@@ -212,6 +212,7 @@ class GameState():
         draw_text(screen, "Puntos : " + str(puntuacion), 25, WIDTH - 100, 10)
         draw_text(screen, "Vida : " + str(jugador.vidas), 25, WIDTH - 400, 10)
         draw_text(screen, "Tiempo : " + str(segundo), 25, WIDTH - 550, 10)
+        draw_text(screen, textBox.text, 25, 325, HEIGHT - 50)
         tiempoactual = pygame.time.get_ticks()
         impactos = pygame.sprite.spritecollide(jugador, enemigo, False)
         if impactos and (tiempoactual - jugador.ultimogolpe) > jugador.invencible:
