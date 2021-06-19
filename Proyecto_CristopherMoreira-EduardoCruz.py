@@ -18,6 +18,8 @@ pygame.mixer.init()
 impact_sound = pygame.mixer.Sound("thud3.wav")
 ship_impact = pygame.mixer.Sound("clink3.wav")
 arreglo = []
+arreglo1 = []
+arreglo_names = []
 nombre_archivo = ""
 a=True
 
