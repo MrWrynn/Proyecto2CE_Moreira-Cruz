@@ -414,12 +414,10 @@ class GameState():
     # Set intructions screen
     def rules(self):
         screen.blit(background, [0, 0])
-        draw_text(screen, "OPERATION MOON LIGHT", 65, WIDTH // 2, HEIGHT // 4)
+        draw_text(screen, "OPERATION ASTEROID", 65, WIDTH // 2, HEIGHT // 4)
         draw_text(screen, "Para moverse utilice las flechas del teclado", 27, WIDTH // 2, HEIGHT // 2)
-        draw_text(screen, "Para disparar utilice la barra espaciadora", 27, WIDTH // 2, HEIGHT // 2 + 32)
-        draw_text(screen, "Para volver a la pantalla inicial presione la tecla escape", 27, WIDTH // 2,
-                  HEIGHT // 2 + 32 * 2)
-        draw_text(screen, "Mientras juega, presione escape para volver al incio", 27, WIDTH // 2, HEIGHT // 2 + 32 * 3)
+        draw_text(screen, "Para volver a la pantalla inicial presione la tecla escape", 27, WIDTH // 2, HEIGHT // 2 + 32)
+        draw_text(screen, "Mientras juega, presione escape para volver al incio", 27, WIDTH // 2, HEIGHT // 2 + 32 * 2)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
