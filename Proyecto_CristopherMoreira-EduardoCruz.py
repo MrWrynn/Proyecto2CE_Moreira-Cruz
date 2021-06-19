@@ -362,7 +362,38 @@ class GameState():
 
     # Set scores screen
     def scores(self):
+        global arreglo1, arreglo_names
         screen.blit(background, [0, 0])
+        with open('puntos.txt', "r") as archivo:
+            for linea in archivo:
+                #
+                linea = linea.rstrip()
+                #
+                lista = linea.split("\t")
+                #
+                calificacion = int(lista[0])
+                nombre = lista[1]
+
+                arreglo1 = arreglo1 + [calificacion]
+                arreglo_names= arreglo_names + [nombre]
+        draw_text(screen, "Highscores", 65, WIDTH // 2, HEIGHT // 4)
+        draw_text(screen, "(1)  ", 27, WIDTH // 2 - 100, HEIGHT // 2 + 32 * 2)
+        draw_text(screen, "(2)  ", 27, WIDTH // 2 -100, HEIGHT // 2 + 32 * 3)
+        draw_text(screen, "(3)  ", 27, WIDTH // 2-100, HEIGHT // 2 + 32 * 4)
+        draw_text(screen, "(4)  ", 27, WIDTH // 2-100, HEIGHT // 2 + 32 * 5)
+        draw_text(screen, "(5)  ", 27, WIDTH // 2-100, HEIGHT // 2 + 32 * 6)
+        #
+        draw_text(screen,str(arreglo1[0]), 27, WIDTH // 2, HEIGHT // 2 + 32 * 2)
+        draw_text(screen,str(arreglo1[1]), 27, WIDTH // 2, HEIGHT // 2 + 32 * 3)
+        draw_text(screen,str(arreglo1[2]), 27, WIDTH // 2, HEIGHT // 2 + 32 * 4)
+        draw_text(screen,str(arreglo1[3]), 27, WIDTH // 2, HEIGHT // 2 + 32 * 5)
+        draw_text(screen,str(arreglo1[4]), 27, WIDTH // 2, HEIGHT // 2 + 32 * 6)
+        #
+        draw_text(screen, str(arreglo_names[0]), 27, WIDTH // 2+100, HEIGHT // 2 + 32 * 2)
+        draw_text(screen, str(arreglo_names[1]), 27, WIDTH // 2+100, HEIGHT // 2 + 32 * 3)
+        draw_text(screen, str(arreglo_names[2]), 27, WIDTH // 2+100, HEIGHT // 2 + 32 * 4)
+        draw_text(screen, str(arreglo_names[3]), 27, WIDTH // 2+100, HEIGHT // 2 + 32 * 5)
+        draw_text(screen, str(arreglo_names[4]), 27, WIDTH // 2+100, HEIGHT // 2 + 32 * 6)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
