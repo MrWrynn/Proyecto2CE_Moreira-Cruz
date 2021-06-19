@@ -47,7 +47,7 @@ pygame.init()  # Initialize pygame
 pygame.font.init()  # Initialize font
 pygame.mixer.init()  # initialize pygame mixer (Music/sound)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Set screen
-pygame.display.set_caption("OPERATION MOON LIGHT")  # Set window name
+pygame.display.set_caption("OPERATION ASTEROID")  # Set window name
 clock = pygame.time.Clock()  # Set FPS clock
 
 # Arreglar
@@ -316,7 +316,7 @@ class GameState():
         music_level2.stop()
         music_level3.stop()
         screen.blit(background, [0, 0])
-        draw_text(screen, "OPERATION MOON LIGHT", 65, WIDTH // 2, HEIGHT // 4)
+        draw_text(screen, "OPERATION ASTEROID", 60, WIDTH // 2, HEIGHT // 4)
         draw_text(screen, "Presione una tecla para proceder", 27, WIDTH // 2, HEIGHT // 2)
         draw_text(screen, "(1) Iniciar", 20, WIDTH // 2, HEIGHT * 3 / 4)
         draw_text(screen, "(2) About", 20, WIDTH // 2, HEIGHT * 3 / 4 + 30)
