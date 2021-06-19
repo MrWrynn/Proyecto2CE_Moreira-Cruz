@@ -866,7 +866,7 @@ class TextBox(pygame.sprite.Sprite):
 
 
 # Variables
-background = pygame.image.load("spacebg3.png").convert()
+background = pygame.image.load("spacebg3.jpg").convert()
 game_state = GameState()
 textBox = TextBox()
 textBox.rect.center = [325, 325]
