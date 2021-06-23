@@ -774,20 +774,21 @@ class GameState():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.key == pygame.K_ESCAPE:
-                self.state = 'intro'
-                segundo = 0
-                segundo_1 = 60
-                segundo_2 = 120
-                jugador.vidas = 3
-                puntuacion = 0
-                sprites.add(jugador)
-                enemigo.add(asteroide1)
-                a=True
-                arreglo=[]
-                facil = True
-                normal = False
-                dificil = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.state = 'intro'
+                    segundo = 0
+                    segundo_1 = 60
+                    segundo_2 = 120
+                    jugador.vidas = 3
+                    puntuacion = 0
+                    sprites.add(jugador)
+                    enemigo.add(asteroide1)
+                    a=True
+                    arreglo=[]
+                    facil = True
+                    normal = False
+                    dificil = False
         pygame.display.flip()
 
     def win_screen(self):
@@ -828,20 +829,21 @@ class GameState():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.key == pygame.K_ESCAPE:
-                self.state = 'intro'
-                segundo = 0
-                segundo_1 = 60
-                segundo_2 = 120
-                jugador.vidas = 3
-                puntuacion = 0
-                sprites.add(jugador)
-                enemigo.add(asteroide1)
-                a=True
-                arreglo=[]
-                facil = True
-                normal = False
-                dificil = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.state = 'intro'
+                    segundo = 0
+                    segundo_1 = 60
+                    segundo_2 = 120
+                    jugador.vidas = 3
+                    puntuacion = 0
+                    sprites.add(jugador)
+                    enemigo.add(asteroide1)
+                    a=True
+                    arreglo=[]
+                    facil = True
+                    normal = False
+                    dificil = False
         pygame.display.flip()
 
 
