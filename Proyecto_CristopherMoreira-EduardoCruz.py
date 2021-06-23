@@ -345,14 +345,15 @@ class GameState():
     # Set about screen
     def about(self):
         screen.blit(background, [0, 0])
-        draw_text(screen, "OPERATION MOON LIGHT", 65, WIDTH // 2, HEIGHT // 4)
+        draw_text(screen, "OPERATION ASTEROID", 60, WIDTH // 2, HEIGHT // 4)
         draw_text(screen, "País: Costa Rica", 27, WIDTH // 2, HEIGHT // 2)
         draw_text(screen, "Tecnologico de Costa Rica | Ingenieria en computadores", 27, WIDTH // 2, HEIGHT // 2 + 27)
         draw_text(screen, "Taller de programación | Primer añor | Grupo", 27, WIDTH // 2, HEIGHT // 2 + 27 * 2)
         draw_text(screen, "Leonardo Araya Martinez", 27, WIDTH // 2, HEIGHT // 2 + 27 * 3)
         draw_text(screen, "Versión 1.0", 27, WIDTH // 2, HEIGHT // 2 + 27 * 4)
         draw_text(screen, "Cristopher Moreira Quirós", 27, WIDTH // 2, HEIGHT // 2 + 27 * 5)
-        draw_text(screen, "*", 27, WIDTH // 2, HEIGHT // 2 + 27 * 6)
+        draw_text(screen, "Eduardo Cruz Vargas", 27, WIDTH // 2, HEIGHT // 2 + 27 * 6)
+        draw_text(screen, "Autor de pygame: Pete Shinners", 27, WIDTH // 2, HEIGHT // 2 + 27 * 7)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -414,7 +415,7 @@ class GameState():
     # Set intructions screen
     def rules(self):
         screen.blit(background, [0, 0])
-        draw_text(screen, "OPERATION ASTEROID", 65, WIDTH // 2, HEIGHT // 4)
+        draw_text(screen, "OPERATION ASTEROID", 60, WIDTH // 2, HEIGHT // 4)
         draw_text(screen, "Para moverse utilice las flechas del teclado", 27, WIDTH // 2, HEIGHT // 2)
         draw_text(screen, "Para volver a la pantalla inicial presione la tecla escape", 27, WIDTH // 2, HEIGHT // 2 + 32)
         draw_text(screen, "Mientras juega, presione escape para volver al incio", 27, WIDTH // 2, HEIGHT // 2 + 32 * 2)
